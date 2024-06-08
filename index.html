@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Learning Centre Project</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.12.2/dist/full.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <nav class="border bg-slate-100 sticky top-0 z-10">
+      <div class="navbar bg-base-100 max-w-7xl mx-auto px-7 bg-slate-100">
+        <div class="navbar-start">
+          <div class="dropdown">
+            <div tabindex="0" role="button" class="btn btn-ghost md:hidden">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h8m-8 6h16"
+                />
+              </svg>
+            </div>
+            <ul
+              tabindex="0"
+              class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+            >
+              <li><a href="index.html">Home</a></li>
+              <li><a href="student.html">Students</a></li>
+            </ul>
+          </div>
+          <a href="index.html" class="btn btn-ghost text-xl">Learning Centre</a>
+        </div>
+
+        <div class="navbar-end gap-4 hidden md:flex">
+          <li class="list-none">
+            <a class="text-xl hover:text-blue-600" href="index.html">Home</a>
+          </li>
+          <li class="list-none">
+            <a class="text-xl hover:text-blue-600" href="student.html"
+              >Students</a
+            >
+          </li>
+        </div>
+      </div>
+    </nav>
+    <div class="max-w-7xl mx-auto px-7 flex mt-1">
+      <input
+        required
+        type="text"
+        placeholder="Type here"
+        class="input input-bordered w-full rounded-none rounded-tl-lg rounded-bl-lg"
+      />
+      <button
+        id="show-modal-btn"
+        onclick="my_modal_2.showModal()"
+        class="btn btn-outline btn-primary rounded-none rounded-tr-lg rounded-br-lg"
+      >
+        Add
+      </button>
+    </div>
+    <div class="max-w-7xl mx-auto px-4">
+      <div
+        class="flex flex-wrap justify-evenly gap-3 items-center py-10 teachers"
+      ></div>
+    </div>
+    <!-- Open the modal using ID.showModal() method -->
+    <dialog id="my_modal_2" class="modal">
+      <form class="modal-box" id="teacher-form">
+        <h3 class="font-bold text-lg mb-4">Teacher Data</h3>
+        <label
+          class="input input-bordered flex items-center gap-2 mb-4 font-medium"
+        >
+          FirstName
+          <input
+            required
+            id="firstName"
+            type="text"
+            class="grow"
+            placeholder="Asadbek"
+          />
+        </label>
+        <label
+          class="input input-bordered flex items-center gap-2 mb-4 font-medium"
+        >
+          LastName
+          <input
+            required
+            id="lastName"
+            type="text"
+            class="grow"
+            placeholder="Ayubov"
+          />
+        </label>
+        <label
+          class="input input-bordered flex items-center gap-2 mb-4 font-medium"
+        >
+          Image Url
+          <input
+            required
+            id="image"
+            type="text"
+            class="grow"
+            placeholder="https://images.app.goo.gl/pRogce8BibcYG2896"
+          />
+        </label>
+        <label
+          class="input input-bordered flex items-center gap-2 mb-4 font-medium"
+        >
+          Groups
+          <input
+            required
+            id="groups"
+            type="text"
+            class="grow"
+            placeholder="React-N1 , React-N2 ..."
+          />
+        </label>
+        <div class="border-solid border border-sky-200 h-auto rounded-lg mb-4">
+          <select id="isMarried" class="select w-full font-medium" required>
+            <option disabled selected>Is Married ?</option>
+            <option value="Married">Married</option>
+            <option value="Single">Single</option>
+          </select>
+        </div>
+        <label
+          class="input input-bordered flex items-center gap-2 mb-4 font-medium"
+        >
+          PhoneNumber
+          <input
+            id="phoneNumber"
+            required
+            type="number"
+            class="grow"
+            placeholder="+998 91 489 91 86"
+          />
+        </label>
+        <label
+          class="input input-bordered flex items-center gap-2 mb-4 font-medium"
+        >
+          Email
+          <input
+            id="email"
+            required
+            type="email"
+            class="grow"
+            placeholder="user@gmail.com"
+          />
+        </label>
+        <div class="flex gap-3 justify-end">
+          <button
+            id="close-btn"
+            type="button"
+            class="btn btn-secondary text-white"
+          >
+            Close
+          </button>
+          <button id="add-btn" class="btn btn-primary">Add</button>
+        </div>
+      </form>
+      <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+      </form>
+    </dialog>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="js/teacher.js"></script>
+  </body>
+</html>
