@@ -56,25 +56,44 @@
         </div>
       </div>
     </nav>
-    <div class="max-w-7xl mx-auto px-7 flex mt-1">
+    <div class="max-w-7xl mx-auto px-7 my-3">
+      <div role="alert" class="alert alert-info max-w-7xl mx-auto px-7">
+        <h3 class="text-2xl text-white">
+          Teachers: <span class="teachers-quantity"></span>
+        </h3>
+      </div>
+    </div>
+    <div
+      class="max-w-7xl mx-auto px-7 flex gap-1 sm:flex-nowrap justify-between flex-wrap"
+    >
       <input
         id="teacher-search-input"
         required
         type="text"
-        placeholder="Type here"
-        class="input input-bordered w-full rounded-none rounded-tl-lg rounded-bl-lg"
+        placeholder="Search using Name"
+        class="input input-bordered w-full rounded-lg"
       />
+      <select
+        id="teacher-sort-select"
+        class="select select-bordered w-[75%] sm:w-[150px]"
+      >
+        <option selected value="">Default</option>
+        <option value="firstName-asc">firstName A-Z</option>
+        <option value="firstName-desc">firstName Z-A</option>
+        <option value="createdAt-asc">CreatedAt Asc</option>
+        <option value="createdAt-desc">CreatedAt Desc</option>
+      </select>
       <button
         id="show-modal-btn"
         onclick="my_modal_2.showModal()"
-        class="btn btn-outline btn-primary rounded-none rounded-tr-lg rounded-br-lg"
+        class="btn btn-outline btn-primary rounded-lg w-[20%] sm:w-auto"
       >
         Add
       </button>
     </div>
     <div class="max-w-7xl mx-auto px-4">
       <div
-        class="flex flex-wrap justify-evenly gap-3 items-center py-10 teachers"
+        class="flex flex-wrap justify-evenly gap-3 items-center pt-3 pb-10 teachers"
       ></div>
     </div>
     <!-- Open the modal using ID.showModal() method -->

@@ -5,9 +5,17 @@ const addBtn = document.querySelector('#add-btn')
 const showModalBtn = document.querySelector('#show-modal-btn')
 const closeBtn = document.querySelector('#close-btn')
 const teacherSearchInput = document.querySelector('#teacher-search-input')
+const teacherQuantity = document.querySelector('.teachers-quantity')
+const teacherSortSelect = document.querySelector('#teacher-sort-select')
+
+const request = axios.create({
+  baseURL: `https://6663008762966e20ef0aece5.mockapi.io/`,
+  timeout: 10000
+})
 
 let selected = null;
 let search = "";
+let teacherSort = ""
 
 function getTeacherCard({ id, firstName, lastName, avatar, isMarried, phoneNumber, email }) {
   return `
@@ -43,25 +51,29 @@ function getTeacherCard({ id, firstName, lastName, avatar, isMarried, phoneNumbe
     `
 }
 
+// get Teachers
 async function getTeachers() {
   try {
     teachersEL.innerHTML = '<span class="loading loading-spinner loading-lg fixed top-[45%]"></span>'
-    const params = { name: search }
-    let { data } = await axios.get('https://6663008762966e20ef0aece5.mockapi.io/Teacher', { params })
+
+    const [orderBy, order] = teacherSort.split('-')
+    const params = { firstName: search, orderBy, order }
+    let { data } = await request.get('Teacher', { params })
+    teacherQuantity.textContent = data.length
     teachersEL.innerHTML = ""
     data.map((teacher) => {
       teachersEL.innerHTML += getTeacherCard(teacher)
     })
   } catch (err) {
     console.log(err.response.data)
-  } finally {
-    // console.log('Work')
+    teacherQuantity.textContent = 0
+    teachersEL.innerHTML = '<h3 class="text-3xl pt-10 text-[red]">Teacher Not Found</h3>'
   }
 }
 
 getTeachers()
 
-
+// Add Teacher
 teacherForm.addEventListener('submit', async (e) => {
   e.preventDefault()
   const firstName = e.target.elements.firstName.value
@@ -76,22 +88,22 @@ teacherForm.addEventListener('submit', async (e) => {
   }
 
   if (selected === null) {
-    await axios.post(`https://6663008762966e20ef0aece5.mockapi.io/Teacher`, teacher)
+    await request.post(`Teacher`, teacher)
   } else {
-    await axios.put(`https://6663008762966e20ef0aece5.mockapi.io/Teacher/${selected}`, teacher)
+    await request.put(`Teacher/${selected}`, teacher)
   }
+
+  submitModal.close()
 
   getTeachers()
 
-  // submitModal.classList.add("hide-visibility");
   teacherForm.reset()
-  // location.reload();
 })
 
-
+// Edit Teacher
 async function editTeacher(id) {
   my_modal_2.showModal()
-  let { data } = await axios.get(`https://6663008762966e20ef0aece5.mockapi.io/Teacher/${id}`)
+  let { data } = await request.get(`Teacher/${id}`)
   teacherForm.elements.firstName.value = data.firstName
   teacherForm.elements.lastName.value = data.lastName
   teacherForm.elements.image.value = data.avatar
@@ -111,21 +123,30 @@ showModalBtn.addEventListener('click', () => {
   addBtn.textContent = 'Add'
 })
 
+// Delete Teacher
 async function deleteTeacher(id) {
   let isDeleted = confirm('Are you sure you want to delete this teacher ?')
   if (isDeleted) {
-    await axios.delete(`https://6663008762966e20ef0aece5.mockapi.io/Teacher/${id}`)
+    await request.delete(`Teacher/${id}`)
+    getTeachers()
   }
-  getTeachers()
 }
 
+// Close Modal
 closeBtn.addEventListener('click', () => {
-  submitModal.classList.add("hide-visibility");
-  // location.reload();
+  submitModal.close()
 })
 
-
+//  Search Teacher
 teacherSearchInput.addEventListener('keyup', (e) => {
   search = e.target.value;
   getTeachers()
 })
+
+
+teacherSortSelect.addEventListener('change', (e) => {
+  teacherSort = e.target.value;
+  getTeachers()
+})
+
+
