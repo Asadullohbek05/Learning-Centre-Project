@@ -4,8 +4,10 @@ const submitModal = document.querySelector('#my_modal_2')
 const addBtn = document.querySelector('#add-btn')
 const showModalBtn = document.querySelector('#show-modal-btn')
 const closeBtn = document.querySelector('#close-btn')
+const teacherSearchInput = document.querySelector('#teacher-search-input')
 
 let selected = null;
+let search = "";
 
 function getTeacherCard({ id, firstName, lastName, avatar, isMarried, phoneNumber, email }) {
   return `
@@ -44,7 +46,8 @@ function getTeacherCard({ id, firstName, lastName, avatar, isMarried, phoneNumbe
 async function getTeachers() {
   try {
     teachersEL.innerHTML = '<span class="loading loading-spinner loading-lg fixed top-[45%]"></span>'
-    let { data } = await axios.get('https://6663008762966e20ef0aece5.mockapi.io/Teacher')
+    const params = { name: search }
+    let { data } = await axios.get('https://6663008762966e20ef0aece5.mockapi.io/Teacher', { params })
     teachersEL.innerHTML = ""
     data.map((teacher) => {
       teachersEL.innerHTML += getTeacherCard(teacher)
@@ -82,7 +85,7 @@ teacherForm.addEventListener('submit', async (e) => {
 
   submitModal.classList.add("hide-visibility");
   teacherForm.reset()
-  location.reload();
+  // location.reload();
 })
 
 
@@ -94,7 +97,7 @@ async function editTeacher(id) {
   teacherForm.elements.image.value = data.avatar
   teacherForm.elements.groups.value = data.groups
   // teacherForm.elements.isMarried.value = data.isMarried
-  // teacherForm.elements.phoneNumber.value = Number(data.phoneNumber)
+  teacherForm.elements.phoneNumber.value = data.phoneNumber
   teacherForm.elements.email.value = data.email
   // console.log(typeof Number(data.phoneNumber))
   selected = id;
@@ -118,4 +121,10 @@ async function deleteTeacher(id) {
 
 closeBtn.addEventListener('click', () => {
   submitModal.classList.add("hide-visibility");
+})
+
+
+teacherSearchInput.addEventListener('keyup', (e) => {
+  search = e.target.value;
+  getTeachers()
 })
