@@ -83,7 +83,7 @@ teacherForm.addEventListener('submit', async (e) => {
 
   getTeachers()
 
-  submitModal.classList.add("hide-visibility");
+  // submitModal.classList.add("hide-visibility");
   teacherForm.reset()
   // location.reload();
 })
@@ -121,6 +121,7 @@ async function deleteTeacher(id) {
 
 closeBtn.addEventListener('click', () => {
   submitModal.classList.add("hide-visibility");
+  // location.reload();
 })
 
 
