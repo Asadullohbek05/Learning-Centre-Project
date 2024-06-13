@@ -13,189 +13,198 @@
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body>
-    <nav class="border bg-slate-100 sticky top-0 z-10">
-      <div class="navbar bg-base-100 max-w-7xl mx-auto px-7 bg-slate-100">
-        <div class="navbar-start">
-          <div class="dropdown">
-            <div tabindex="0" role="button" class="btn btn-ghost md:hidden">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+    <header>
+      <nav class="border bg-slate-100 sticky top-0 z-10">
+        <div class="navbar bg-base-100 max-w-7xl mx-auto px-7 bg-slate-100">
+          <div class="navbar-start">
+            <div class="dropdown">
+              <div tabindex="0" role="button" class="btn btn-ghost md:hidden">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 6h16M4 12h8m-8 6h16"
+                  />
+                </svg>
+              </div>
+              <ul
+                tabindex="0"
+                class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
               >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 6h16M4 12h8m-8 6h16"
-                />
-              </svg>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="student.html"> </a></li>
+              </ul>
             </div>
-            <ul
-              tabindex="0"
-              class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+            <a href="index.html" class="btn btn-ghost text-xl"
+              >Learning Centre</a
             >
-              <li><a href="index.html">Home</a></li>
-              <li><a href="student.html"> </a></li>
-            </ul>
           </div>
-          <a href="index.html" class="btn btn-ghost text-xl">Learning Centre</a>
-        </div>
 
-        <div class="navbar-end gap-4 hidden md:flex">
-          <li class="list-none">
-            <a class="text-xl hover:text-blue-600" href="index.html">Home</a>
-          </li>
-          <li class="list-none">
-            <a class="text-xl hover:text-blue-600" href="student.html"
-              >Students</a
-            >
-          </li>
+          <div class="navbar-end gap-5 hidden md:flex">
+            <li class="list-none">
+              <a class="text-xl hover:text-blue-600" href="index.html">Home</a>
+            </li>
+            <li class="list-none">
+              <a class="text-xl hover:text-blue-600" href="students.html"
+                >Favorite Students</a
+              >
+            </li>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <div class="max-w-7xl mx-auto px-7 my-3">
+        <div role="alert" class="alert alert-info max-w-7xl mx-auto px-7">
+          <h3 class="text-2xl text-white">
+            Teachers: <span class="teachers-quantity"></span>
+          </h3>
         </div>
       </div>
-    </nav>
-    <div class="max-w-7xl mx-auto px-7 my-3">
-      <div role="alert" class="alert alert-info max-w-7xl mx-auto px-7">
-        <h3 class="text-2xl text-white">
-          Teachers: <span class="teachers-quantity"></span>
-        </h3>
-      </div>
-    </div>
-    <div
-      class="max-w-7xl mx-auto px-7 flex gap-1 sm:flex-nowrap justify-between flex-wrap"
-    >
-      <input
-        id="teacher-search-input"
-        required
-        type="text"
-        placeholder="Search using Name"
-        class="input input-bordered w-full rounded-lg"
-      />
-      <select
-        id="teacher-sort-select"
-        class="select select-bordered w-[75%] sm:w-[150px]"
-      >
-        <option selected value="">Default</option>
-        <option value="firstName-asc">firstName A-Z</option>
-        <option value="firstName-desc">firstName Z-A</option>
-        <option value="createdAt-asc">CreatedAt Asc</option>
-        <option value="createdAt-desc">CreatedAt Desc</option>
-      </select>
-      <button
-        id="show-modal-btn"
-        onclick="my_modal_2.showModal()"
-        class="btn btn-outline btn-primary rounded-lg w-[20%] sm:w-auto"
-      >
-        Add
-      </button>
-    </div>
-    <div class="max-w-7xl mx-auto px-4">
       <div
-        class="flex flex-wrap justify-evenly gap-3 items-center pt-3 pb-10 teachers"
-      ></div>
-    </div>
-    <!-- Open the modal using ID.showModal() method -->
-    <dialog id="my_modal_2" class="modal">
-      <form class="modal-box" id="teacher-form">
-        <h3 class="font-bold text-lg mb-4">Teacher Data</h3>
-        <label
-          class="input input-bordered flex items-center gap-2 mb-4 font-medium"
+        class="max-w-7xl mx-auto px-7 flex gap-1 sm:flex-nowrap justify-between flex-wrap"
+      >
+        <input
+          id="teacher-search-input"
+          required
+          type="text"
+          placeholder="Search using Name"
+          class="input input-bordered w-full rounded-lg"
+        />
+        <select
+          id="teacher-sort-select"
+          class="select select-bordered w-[75%] sm:w-[150px]"
         >
-          FirstName
-          <input
-            required
-            id="firstName"
-            type="text"
-            class="grow"
-            placeholder="Asadbek"
-          />
-        </label>
-        <label
-          class="input input-bordered flex items-center gap-2 mb-4 font-medium"
+          <option selected value="">Default</option>
+          <option value="firstName-asc">firstName A-Z</option>
+          <option value="firstName-desc">firstName Z-A</option>
+          <option value="createdAt-asc">CreatedAt Asc</option>
+          <option value="createdAt-desc">CreatedAt Desc</option>
+        </select>
+        <button
+          id="show-modal-btn"
+          onclick="my_modal_2.showModal()"
+          class="btn btn-outline btn-primary rounded-lg w-[20%] sm:w-auto"
         >
-          LastName
-          <input
-            required
-            id="lastName"
-            type="text"
-            class="grow"
-            placeholder="Ayubov"
-          />
-        </label>
-        <label
-          class="input input-bordered flex items-center gap-2 mb-4 font-medium"
-        >
-          Image Url
-          <input
-            required
-            id="image"
-            type="text"
-            class="grow"
-            placeholder="https://images.app.goo.gl/pRogce8BibcYG2896"
-          />
-        </label>
-        <label
-          class="input input-bordered flex items-center gap-2 mb-4 font-medium"
-        >
-          Groups
-          <input
-            required
-            id="groups"
-            type="text"
-            class="grow"
-            placeholder="React-N1 , React-N2 ..."
-          />
-        </label>
-        <div class="border-solid border border-sky-200 h-auto rounded-lg mb-4">
-          <select id="isMarried" class="select w-full font-medium">
-            <option disabled selected>Is Married ?</option>
-            <option value="Married">Married</option>
-            <option value="Single">Single</option>
-          </select>
-        </div>
-        <label
-          class="input input-bordered flex items-center gap-2 mb-4 font-medium"
-        >
-          PhoneNumber
-          <input
-            id="phoneNumber"
-            required
-            type="text"
-            class="grow"
-            placeholder="+998 91 489 91 86"
-          />
-        </label>
-        <label
-          class="input input-bordered flex items-center gap-2 mb-4 font-medium"
-        >
-          Email
-          <input
-            id="email"
-            required
-            type="email"
-            class="grow"
-            placeholder="user@gmail.com"
-          />
-        </label>
-        <div class="flex gap-3 justify-end">
-          <button
-            id="close-btn"
-            type="button"
-            class="btn btn-secondary text-white"
+          Add
+        </button>
+      </div>
+      <section class="max-w-7xl mx-auto px-4">
+        <div
+          class="flex flex-wrap justify-evenly gap-3 items-center pt-3 pb-10 teachers"
+        ></div>
+      </section>
+      <!-- Open the modal using ID.showModal() method -->
+      <dialog id="my_modal_2" class="modal">
+        <form class="modal-box" id="teacher-form">
+          <h3 class="font-bold text-lg mb-4">Teacher Data</h3>
+          <label
+            class="input input-bordered flex items-center gap-2 mb-4 font-medium"
           >
-            Close
-          </button>
-          <button id="add-btn" class="btn btn-primary">Add</button>
-        </div>
-      </form>
-      <form method="dialog" class="modal-backdrop">
-        <button>close</button>
-      </form>
-    </dialog>
+            FirstName
+            <input
+              required
+              id="firstName"
+              type="text"
+              class="grow"
+              placeholder="Asadbek"
+            />
+          </label>
+          <label
+            class="input input-bordered flex items-center gap-2 mb-4 font-medium"
+          >
+            LastName
+            <input
+              required
+              id="lastName"
+              type="text"
+              class="grow"
+              placeholder="Ayubov"
+            />
+          </label>
+          <label
+            class="input input-bordered flex items-center gap-2 mb-4 font-medium"
+          >
+            Image Url
+            <input
+              required
+              id="image"
+              type="text"
+              class="grow"
+              placeholder="https://images.app.goo.gl/pRogce8BibcYG2896"
+            />
+          </label>
+          <label
+            class="input input-bordered flex items-center gap-2 mb-4 font-medium"
+          >
+            Groups
+            <input
+              required
+              id="groups"
+              type="text"
+              class="grow"
+              placeholder="React-N1 , React-N2 ..."
+            />
+          </label>
+          <div
+            class="border-solid border border-sky-200 h-auto rounded-lg mb-4"
+          >
+            <select id="isMarried" class="select w-full font-medium">
+              <option disabled selected>Is Married ?</option>
+              <option value="Married">Married</option>
+              <option value="Single">Single</option>
+            </select>
+          </div>
+          <label
+            class="input input-bordered flex items-center gap-2 mb-4 font-medium"
+          >
+            PhoneNumber
+            <input
+              id="phoneNumber"
+              required
+              type="text"
+              class="grow"
+              placeholder="+998 91 489 91 86"
+            />
+          </label>
+          <label
+            class="input input-bordered flex items-center gap-2 mb-4 font-medium"
+          >
+            Email
+            <input
+              id="email"
+              required
+              type="email"
+              class="grow"
+              placeholder="user@gmail.com"
+            />
+          </label>
+          <div class="flex gap-3 justify-end">
+            <button
+              id="close-btn"
+              type="button"
+              class="btn btn-secondary text-white"
+            >
+              Close
+            </button>
+            <button id="add-btn" class="btn btn-primary">Add</button>
+          </div>
+        </form>
+        <form method="dialog" class="modal-backdrop">
+          <button>close</button>
+        </form>
+      </dialog>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="js/const.js"></script>
     <script src="js/teacher.js"></script>
   </body>
 </html>

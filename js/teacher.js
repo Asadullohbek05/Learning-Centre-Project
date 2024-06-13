@@ -8,11 +8,6 @@ const teacherSearchInput = document.querySelector('#teacher-search-input')
 const teacherQuantity = document.querySelector('.teachers-quantity')
 const teacherSortSelect = document.querySelector('#teacher-sort-select')
 
-const request = axios.create({
-  baseURL: `https://6663008762966e20ef0aece5.mockapi.io/`,
-  timeout: 10000
-})
-
 let selected = null;
 let search = "";
 let teacherSort = ""
@@ -44,7 +39,7 @@ function getTeacherCard({ id, firstName, lastName, avatar, isMarried, phoneNumbe
             <div class="flex justify-between">
               <button  onclick="editTeacher(${id})" class="btn btn-sm btn-success text-white">Edit</button>
               <button onclick="deleteTeacher(${id})" class="btn btn-sm btn-error text-white">Delete</button>
-              <a href="student.html" class="btn btn-sm btn-primary">Students</a>
+              <a href="students.html?TeacherId=${id}" class="btn btn-sm btn-primary">See Students</a>
             </div>
           </div>
         </div>

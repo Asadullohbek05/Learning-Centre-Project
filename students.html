@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Students</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.12.2/dist/full.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <header>
+      <nav class="border bg-slate-100 sticky top-0 z-10">
+        <div class="navbar bg-base-100 max-w-7xl mx-auto px-7 bg-slate-100">
+          <div class="navbar-start">
+            <div class="dropdown">
+              <div tabindex="0" role="button" class="btn btn-ghost md:hidden">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 6h16M4 12h8m-8 6h16"
+                  />
+                </svg>
+              </div>
+              <ul
+                tabindex="0"
+                class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+              >
+                <li><a href="index.html">Home</a></li>
+                <li><a href="student.html">Favorite Students</a></li>
+              </ul>
+            </div>
+            <a href="index.html" class="btn btn-ghost text-xl"
+              >Learning Centre</a
+            >
+          </div>
+
+          <div class="navbar-end gap-4 hidden md:flex">
+            <li class="list-none">
+              <a class="text-xl hover:text-blue-600" href="index.html">Home</a>
+            </li>
+            <li class="list-none">
+              <a class="text-xl hover:text-blue-600" href="student.html"
+                >Favorite Students</a
+              >
+            </li>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <div class="max-w-7xl mx-auto px-7 my-3">
+        <div role="alert" class="alert alert-success max-w-7xl mx-auto px-7">
+          <h3 class="text-2xl text-white">
+            Teacher's Students: <span class="students-quantity"></span>
+          </h3>
+        </div>
+      </div>
+      <div
+        class="max-w-7xl mx-auto px-7 flex gap-1 sm:flex-nowrap justify-between flex-wrap"
+      >
+        <input
+          id="students-search-input"
+          required
+          type="text"
+          placeholder="Search using Name"
+          class="input input-bordered w-full rounded-lg"
+        />
+        <select
+          id="teachers-select"
+          class="select select-bordered w-[75%] sm:w-[150px]"
+        >
+          <option selected value="">Default</option>
+        </select>
+        <button
+          id="show-modal-btn"
+          onclick="my_modal_2.showModal()"
+          class="btn btn-outline btn-primary rounded-lg w-[20%] sm:w-auto"
+        >
+          Add
+        </button>
+      </div>
+      <section class="max-w-7xl mx-auto px-4">
+        <div
+          class="flex flex-wrap justify-evenly gap-3 items-center pt-3 pb-10 students"
+        ></div>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="js/const.js"></script>
+    <script src="js/student.js"></script>
+  </body>
+</html>
