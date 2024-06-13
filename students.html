@@ -63,7 +63,8 @@
       <div class="max-w-7xl mx-auto px-7 my-3">
         <div role="alert" class="alert alert-success max-w-7xl mx-auto px-7">
           <h3 class="text-2xl text-white">
-            Teacher's Students: <span class="students-quantity"></span>
+            <span class="teacher-name"></span>Students:
+            <span class="students-quantity"></span>
           </h3>
         </div>
       </div>
@@ -79,19 +80,26 @@
         />
         <select
           id="teachers-select"
-          class="select select-bordered w-[75%] sm:w-[150px]"
+          class="select select-bordered w-[75%] sm:w-[200px]"
         >
           <option selected value="">Default</option>
         </select>
         <button
           id="show-modal-btn"
-          onclick="my_modal_2.showModal()"
           class="btn btn-outline btn-primary rounded-lg w-[20%] sm:w-auto"
         >
           Add
         </button>
       </div>
       <section class="max-w-7xl mx-auto px-4">
+        <div class="flex justify-between px-3 mt-3">
+          <div class="join students-pagination"></div>
+          <select class="select select-bordered pagination-limit">
+            <option value="4">4</option>
+            <option value="8">8</option>
+            <option value="12">12</option>
+          </select>
+        </div>
         <div
           class="flex flex-wrap justify-evenly gap-3 items-center pt-3 pb-10 students"
         ></div>

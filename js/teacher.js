@@ -1,3 +1,5 @@
+const params = new URLSearchParams(location.search)
+
 const teachersEL = document.querySelector('.teachers')
 const teacherForm = document.querySelector('#teacher-form')
 const submitModal = document.querySelector('#my_modal_2')
@@ -7,10 +9,17 @@ const closeBtn = document.querySelector('#close-btn')
 const teacherSearchInput = document.querySelector('#teacher-search-input')
 const teacherQuantity = document.querySelector('.teachers-quantity')
 const teacherSortSelect = document.querySelector('#teacher-sort-select')
+const teachersPagination = document.querySelector('.teachers-pagination')
+const limitSelect = document.querySelector('.pagination-limit')
 
 let selected = null;
-let search = "";
-let teacherSort = ""
+let search = params.get('search') || "";
+let teacherSort = params.get('teacherSort') || "";
+let activePage = +params.get('activePage') || 1;
+let teachersLenght = 0;
+let limit = +params.get('limit') || LIMIT
+
+teacherSearchInput.value = search
 
 function getTeacherCard({ id, firstName, lastName, avatar, isMarried, phoneNumber, email }) {
   return `
@@ -49,24 +58,59 @@ function getTeacherCard({ id, firstName, lastName, avatar, isMarried, phoneNumbe
 // get Teachers
 async function getTeachers() {
   try {
+    setQuery()
+
     teachersEL.innerHTML = '<span class="loading loading-spinner loading-lg fixed top-[45%]"></span>'
 
     const [orderBy, order] = teacherSort.split('-')
-    const params = { firstName: search, orderBy, order }
-    let { data } = await request.get('Teacher', { params })
+    const params = { firstName: search, orderBy, order, page: activePage, limit }
+
+    let { data } = await request.get('Teacher', { params: { firstName: search } })
+
+    let { data: pageTeachers } = await request.get('Teacher', { params })
+    teachersLenght = data.length;
+
     teacherQuantity.textContent = data.length
     teachersEL.innerHTML = ""
-    data.map((teacher) => {
+
+    getPagination()
+
+    pageTeachers.map((teacher) => {
       teachersEL.innerHTML += getTeacherCard(teacher)
     })
   } catch (err) {
     console.log(err.response.data)
     teacherQuantity.textContent = 0
+    teachersPagination.innerHTML = ""
     teachersEL.innerHTML = '<h3 class="text-3xl pt-10 text-[red]">Teacher Not Found</h3>'
   }
 }
 
 getTeachers()
+
+function getPagination() {
+  let pages = Math.ceil(teachersLenght / limit)
+  if (teachersLenght <= limit) {
+    teachersPagination.innerHTML = ""
+  } else {
+    teachersPagination.innerHTML = `<button onClick="getPage('-')" class="join-item btn btn-outline-primary ${activePage === 1 ? 'btn-disabled' : ''}">Previous page</button>`
+    for (let i = 1; i <= pages; i++) {
+      teachersPagination.innerHTML += `<button class="join-item btn ${i === activePage ? 'btn-primary' : ''}" onClick="getPage(${i})" >${i}</button>`
+    }
+    teachersPagination.innerHTML += `<button onClick="getPage('+')" class="join-item btn btn-outline-primary ${activePage === pages ? 'btn-disabled' : ''}">Next page</button > `
+  }
+}
+
+function getPage(i) {
+  if (i === '-') {
+    activePage--
+  } else if (i === '+') {
+    activePage++
+  } else {
+    activePage = i
+  }
+  getTeachers()
+}
 
 // Add Teacher
 teacherForm.addEventListener('submit', async (e) => {
@@ -74,18 +118,17 @@ teacherForm.addEventListener('submit', async (e) => {
   const firstName = e.target.elements.firstName.value
   const lastName = e.target.elements.lastName.value
   const avatar = e.target.elements.image.value
-  const groups = e.target.elements.groups.value
   const isMarried = e.target.elements.isMarried.value === 'Married' ? true : false
   const phoneNumber = e.target.elements.phoneNumber.value
   const email = e.target.elements.email.value
   const teacher = {
-    firstName, lastName, avatar, groups, isMarried, phoneNumber, email
+    firstName, lastName, avatar, isMarried, phoneNumber, email
   }
 
   if (selected === null) {
     await request.post(`Teacher`, teacher)
   } else {
-    await request.put(`Teacher/${selected}`, teacher)
+    await request.put(`Teacher / ${selected} `, teacher)
   }
 
   submitModal.close()
@@ -98,15 +141,13 @@ teacherForm.addEventListener('submit', async (e) => {
 // Edit Teacher
 async function editTeacher(id) {
   my_modal_2.showModal()
-  let { data } = await request.get(`Teacher/${id}`)
+  let { data } = await request.get(`Teacher / ${id} `)
   teacherForm.elements.firstName.value = data.firstName
   teacherForm.elements.lastName.value = data.lastName
   teacherForm.elements.image.value = data.avatar
-  teacherForm.elements.groups.value = data.groups
   // teacherForm.elements.isMarried.value = data.isMarried
   teacherForm.elements.phoneNumber.value = data.phoneNumber
   teacherForm.elements.email.value = data.email
-  // console.log(typeof Number(data.phoneNumber))
   selected = id;
 
   addBtn.textContent = 'Save'
@@ -122,7 +163,7 @@ showModalBtn.addEventListener('click', () => {
 async function deleteTeacher(id) {
   let isDeleted = confirm('Are you sure you want to delete this teacher ?')
   if (isDeleted) {
-    await request.delete(`Teacher/${id}`)
+    await request.delete(`Teacher / ${id} `)
     getTeachers()
   }
 }
@@ -135,6 +176,7 @@ closeBtn.addEventListener('click', () => {
 //  Search Teacher
 teacherSearchInput.addEventListener('keyup', (e) => {
   search = e.target.value;
+  activePage = 1
   getTeachers()
 })
 
@@ -144,4 +186,17 @@ teacherSortSelect.addEventListener('change', (e) => {
   getTeachers()
 })
 
+limitSelect.addEventListener('change', (e) => {
+  activePage = 1
+  limit = e.target.value
+  getTeachers()
+})
 
+function setQuery() {
+  params.set('search', search)
+  params.set('teacherSort', teacherSort)
+  params.set('activePage', activePage)
+  params.set('limit', limit)
+
+  history.pushState({}, {}, location.pathname + "?" + params.toString())
+}

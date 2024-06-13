@@ -5,9 +5,15 @@ const studentsEl = document.querySelector('.students')
 const studentsQuantity = document.querySelector('.students-quantity')
 const studentsSearchInput = document.querySelector('#students-search-input')
 const teachersSelect = document.querySelector('#teachers-select')
+const teacherName = document.querySelector('.teacher-name')
+const StudentsPagination = document.querySelector('.students-pagination')
+
 
 let search = params.get('search') || "";
 let teacher = teacherId
+
+let activePage = +params.get('activePage') || 1;
+let studentLenght = 0;
 
 studentsSearchInput.value = search
 
@@ -47,36 +53,90 @@ function getStudentCard({ id, firstName, lastName, birthday, isWork, image, phon
 
 async function getStudents() {
   try {
+    setQuery()
+    const { data: { firstName } } = await request.get(`Teacher/${teacher}`)
+    teacherName.textContent = firstName + `'s `
+
     studentsEl.innerHTML = '<span class="loading loading-spinner loading-lg fixed top-[45%]"></span>'
-    const params = { firstName: search }
-    let { data } = await request.get(`Teacher/${teacherId}/Student`, { params })
-    studentsQuantity.textContent = data.length
+    const params = { firstName: search, page: activePage, limit: LIMIT }
+    let { data } = await request.get(`Teacher/${teacher}/Student`, { params: { firstName: search } })
+
+    let { data: pageStudents } = await request.get(`Teacher/${teacher}/Student`, { params })
+    studentLenght = data.length
+    studentsQuantity.textContent = studentLenght
     studentsEl.innerHTML = ""
-    data.map(student => {
+
+    getPagination()
+
+    pageStudents.map(student => {
       studentsEl.innerHTML += getStudentCard(student)
     })
   } catch (err) {
     console.log(err)
     studentsEl.innerHTML = `<h3 class="text-3xl pt-10 text-[red]">Student Not Found</h3>`
     studentsQuantity.textContent = 0;
+    StudentsPagination.innerHTML = ""
   }
 }
 
 getStudents()
 
-// Search Students
+function getPagination() {
+  if (studentLenght <= LIMIT) {
+    StudentsPagination.innerHTML = ""
+  } else {
+    StudentsPagination.innerHTML = `<button onClick="getPage('-')" class="join-item btn btn-outline-primary ${activePage === 1 ? 'btn-disabled' : ''}">Previous page</button>`
+    let pages = Math.ceil(studentLenght / LIMIT)
+    for (let i = 1; i <= pages; i++) {
+      StudentsPagination.innerHTML += `<button class="join-item btn ${i === activePage ? 'btn-primary' : ''}" onClick="getPage(${i})" >${i}</button>`
+    }
+    StudentsPagination.innerHTML += `<button onClick="getPage('+')" class="join-item btn btn-outline-primary ${activePage === pages ? 'btn-disabled' : ''}">Next page</button > `
+  }
+}
 
-//  Search Teacher
+function getPage(i) {
+  if (i === '-') {
+    activePage--
+  } else if (i === '+') {
+    activePage++
+  } else {
+    activePage = i
+  }
+  getStudents()
+}
+
+async function getTeachersCategory() {
+  try {
+    let { data } = await request.get('Teacher')
+    data.map(({ id, firstName, lastName }) => {
+      teachersSelect.innerHTML += `<option ${id === teacher ? 'selected' : ''} value=${id}>${firstName} ${lastName}</option>`
+    })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+getTeachersCategory()
+
+
+// Search Students
 studentsSearchInput.addEventListener('keyup', (e) => {
   search = e.target.value;
-  params.set('search', search)
-  history.pushState({}, {}, location.pathname + "?" + params.toString())
-
-
+  activePage = 1
   getStudents()
 })
 
 
 teachersSelect.addEventListener('change', (e) => {
   teacher = e.target.value
+  activePage = 1
+  getStudents()
 })
+
+function setQuery() {
+  params.set('search', search)
+  params.set('teacherId', teacher)
+  params.set('activePage', activePage)
+
+  history.pushState({}, {}, location.pathname + "?" + params.toString())
+}
